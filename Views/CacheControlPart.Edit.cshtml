@@ -1,0 +1,53 @@
+﻿@model Etch.OrchardCore.CacheControl.ViewModels.CacheControlPartEditViewModel
+
+@{
+    var items = new List<SelectListItem>()
+    {
+        new SelectListItem { Text = "- Select Directive -".ToString(), Value = "" },
+        new SelectListItem { Text = "No Cache", Value = Constants.CacheDirectives.NoCache },
+        new SelectListItem { Text = "No Store".ToString(), Value = Constants.CacheDirectives.NoStore },
+        new SelectListItem { Text = "Private".ToString(), Value = Constants.CacheDirectives.Private },
+        new SelectListItem { Text = "Public".ToString(), Value = Constants.CacheDirectives.Public }
+    };
+}
+
+<script at="Foot">
+document.querySelector(".js-use-default-checkbox").addEventListener('change', function(e) {
+    var $el = e.target,
+        $cacheFields = document.querySelector('.js-custom-cache-fields');
+
+    if ($el.checked) {
+        $cacheFields.classList.add('d-none');
+        return;
+    }
+
+    $cacheFields.classList.remove('d-none');
+});
+</script>
+
+<div class="form-group">
+    <div class="custom-control custom-checkbox">
+        <input asp-for="UseDefault" type="checkbox" class="custom-control-input content-preview-select js-use-default-checkbox" checked="@Model.UseDefault" />
+        <label class="custom-control-label" asp-for="UseDefault">
+            @T["Use default"]
+            <span class="hint dashed">@T["Use default cache control settings defined within part settings."]</span>
+        </label>
+    </div>
+</div>
+
+<div class="js-custom-cache-fields @(Model.UseDefault ? "d-none" : "")">
+    <div class="form-group">
+        <label asp-for="Directive">@T["Cache Directive"]</label>
+        <select asp-for="Directive" asp-items="@items" asp-validation-class-for="Directive" class="form-select form-control w-25"></select>
+        <span class="hint">@T["Define the caching behaviour that should be used."]</span>
+        <div class="text-danger">
+            <span asp-validation-for="Directive"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Duration">@T["Cache Duration"]</label>
+        <input asp-for="Duration" class="form-control">
+        <span class="hint">@T["Define, in minutes, how long the item should live in the cache."]</span>
+    </div>
+</div>
