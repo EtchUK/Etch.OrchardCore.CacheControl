@@ -3,6 +3,7 @@ using Etch.OrchardCore.CacheControl.Models;
 using Microsoft.Extensions.DependencyInjection;
 using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Display.ContentDisplay;
+using OrchardCore.ContentTypes.Editors;
 using OrchardCore.Data.Migration;
 using OrchardCore.Modules;
 
@@ -14,6 +15,8 @@ namespace Etch.OrchardCore.CacheControl
         {
             services.AddContentPart<CacheControlPart>()
                 .UseDisplayDriver<CacheControlPartDisplayDriver>();
+
+            services.AddScoped<IContentTypePartDefinitionDisplayDriver, CacheControlPartSettingsDisplayDriver>();
 
             services.AddScoped<IDataMigration, Migrations>();
         }

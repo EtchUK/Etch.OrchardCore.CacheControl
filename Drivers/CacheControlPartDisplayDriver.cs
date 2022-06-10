@@ -21,10 +21,12 @@ namespace Etch.OrchardCore.CacheControl.Drivers
 
         public override IDisplayResult Edit(CacheControlPart part, BuildPartEditorContext context)
         {
+            var settings = context.TypePartDefinition.GetSettings<CacheControlPartSettings>();
+
             return Initialize<CacheControlPartEditViewModel>(GetEditorShapeType(context), model =>
             {
-                model.Duration = part.Duration;
-                model.Directive = part.Directive;
+                model.Duration = part.UseDefault ? settings.Duration : part.Duration;
+                model.Directive = part.UseDefault ? settings.Directive : part.Directive;
                 model.UseDefault = part.UseDefault;
             }).Location("Parts:25#Caching");
         }
