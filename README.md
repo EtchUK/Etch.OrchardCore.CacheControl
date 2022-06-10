@@ -1,6 +1,6 @@
 # Etch.OrchardCore.CacheControl
 
-Orchard Core module for controlling cache-control headers on content items.
+Orchard Core module for controlling`cache-control` response headers on content items.
 
 ## Build Status
 
@@ -18,7 +18,7 @@ Alternatively you can [download the source](https://github.com/etchuk/Etch.Orcha
 
 ## Usage
 
-_Add instructions on how to use module features._
+First step is to enable "Cache Control" within the features section of the admin dashboard. Enabling the module will make a new "Cache Control" part that can be attached to a content type. Once attached, ensure to edit the part settings in order to define the default caching behaviour. Content items by default will use the default but can be overridden via the "Cache" tab when editing a content item.
 
 ## Packaging
 
@@ -26,4 +26,4 @@ When the module is compiled (using `dotnet build`) it's configured to generate a
 
 ## Notes
 
-This module was created using `v1.2.0` of [Etch.OrchardCore.CacheControl](https://github.com/EtchUK/Etch.OrchardCore.CacheControl) template.
+This module was created using `v1.2.0` of [Etch.OrchardCore.ModuleBoilerplate](https://github.com/EtchUK/Etch.OrchardCore.ModuleBoilerplate) template.

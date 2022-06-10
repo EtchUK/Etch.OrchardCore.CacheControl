@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>0.0.1</Version>
+    <Version>0.1.0</Version>
     <PackageId>Etch.OrchardCore.CacheControl</PackageId>
     <Title>Cache Control</Title>
     <Authors>Etch UK Ltd.</Authors>
