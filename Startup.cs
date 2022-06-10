@@ -17,6 +17,7 @@ namespace Etch.OrchardCore.CacheControl
                 .UseDisplayDriver<CacheControlPartDisplayDriver>();
 
             services.AddScoped<IContentTypePartDefinitionDisplayDriver, CacheControlPartSettingsDisplayDriver>();
+            services.AddScoped<IContentDisplayDriver, CacheControlDriver>();
 
             services.AddScoped<IDataMigration, Migrations>();
         }

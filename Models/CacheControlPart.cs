@@ -2,7 +2,7 @@
 
 namespace Etch.OrchardCore.CacheControl.Models
 {
-    public class CacheControlPart : ContentPart
+    public class CacheControlPart : ContentPart, ICacheControl
     {
         public string Directive { get; set; }
         public int Duration { get; set; }

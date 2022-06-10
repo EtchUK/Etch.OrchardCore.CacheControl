@@ -1,6 +1,6 @@
 ﻿namespace Etch.OrchardCore.CacheControl.Models
 {
-    public class CacheControlPartSettings
+    public class CacheControlPartSettings : ICacheControl
     {
         public string Directive { get; set; }
         public int Duration { get; set; }
