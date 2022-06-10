@@ -34,7 +34,7 @@ namespace Etch.OrchardCore.CacheControl.Drivers
         {
             if (_primaryContentRendered)
             {
-                return null;
+                return Task.FromResult<IDisplayResult>(null);
             }
 
             _primaryContentRendered = true;
@@ -43,7 +43,7 @@ namespace Etch.OrchardCore.CacheControl.Drivers
                 context.Shape.TryGetProperty(nameof(ContentTypeSettings.Stereotype), out string _) ||
                 !contentItem.Has<CacheControlPart>())
             {
-                return null;
+                return Task.FromResult<IDisplayResult>(null);
             }
 
             var httpContext = _httpContextAccessor.HttpContext;
@@ -58,7 +58,7 @@ namespace Etch.OrchardCore.CacheControl.Drivers
                 if (!string.IsNullOrEmpty(ims) && !CacheControlUtils.IsModifiedSince(contentItem.ModifiedUtc.Value, ims))
                 {
                     httpContext.Response.StatusCode = (int)HttpStatusCode.NotModified;
-                    return null;
+                    return Task.FromResult<IDisplayResult>(null);
                 }
             }
 
@@ -76,7 +76,7 @@ namespace Etch.OrchardCore.CacheControl.Drivers
                 httpContext.Response.Headers[CacheControlResponseHeader] = cacheControlPart.GetCacheControlHeader();
             }
 
-            return null;
+            return Task.FromResult<IDisplayResult>(null); ;
         }
 
         private CacheControlPartSettings GetDefaultSettings(ContentItem contentItem)
