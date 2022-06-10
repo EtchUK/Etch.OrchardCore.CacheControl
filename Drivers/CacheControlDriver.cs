@@ -1,5 +1,6 @@
 ﻿using Etch.OrchardCore.CacheControl.Extensions;
 using Etch.OrchardCore.CacheControl.Models;
+using Etch.OrchardCore.CacheControl.Utils;
 using Microsoft.AspNetCore.Http;
 using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Display.ContentDisplay;
@@ -9,6 +10,7 @@ using OrchardCore.DisplayManagement;
 using OrchardCore.DisplayManagement.Handlers;
 using OrchardCore.DisplayManagement.Views;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Etch.OrchardCore.CacheControl.Drivers
@@ -47,6 +49,19 @@ namespace Etch.OrchardCore.CacheControl.Drivers
             var httpContext = _httpContextAccessor.HttpContext;
             var cacheControlPart = contentItem.As<CacheControlPart>();
 
+            if (contentItem.ModifiedUtc.HasValue) 
+            {
+                httpContext.Response.Headers["Last-Modified"] = contentItem.ModifiedUtc.Value.ToString("R");
+
+                var ims = httpContext.Request.Headers["If-Modified-Since"];
+
+                if (!string.IsNullOrEmpty(ims) && !CacheControlUtils.IsModifiedSince(contentItem.ModifiedUtc.Value, ims))
+                {
+                    httpContext.Response.StatusCode = (int)HttpStatusCode.NotModified;
+                    return null;
+                }
+            }
+
             if (cacheControlPart.UseDefault)
             {
                 var defaultSettings = GetDefaultSettings(contentItem);
@@ -55,11 +70,11 @@ namespace Etch.OrchardCore.CacheControl.Drivers
                 {
                     httpContext.Response.Headers[CacheControlResponseHeader] = defaultSettings.GetCacheControlHeader();
                 }
-
-                return null;
             }
-
-            httpContext.Response.Headers[CacheControlResponseHeader] = cacheControlPart.GetCacheControlHeader();
+            else
+            {
+                httpContext.Response.Headers[CacheControlResponseHeader] = cacheControlPart.GetCacheControlHeader();
+            }
 
             return null;
         }
