@@ -5,6 +5,6 @@ using OrchardCore.Modules.Manifest;
     Category = "Content",
     Description = "Orchard Core module for controlling cache-control response headers on content items.",
     Name = "Cache Control",
-    Version = "0.1.0",
+    Version = "0.1.1",
     Website = "https://etchuk.com"
 )]
