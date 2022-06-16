@@ -81,19 +81,12 @@ namespace Etch.OrchardCore.CacheControl.Drivers
 
         private ICacheControl GetCacheControl(CacheControlPart cacheControlPart)
         {
-            var httpContext = _httpContextAccessor.HttpContext;
-            var identity = httpContext.User.Identity;
             ICacheControl cacheControl = cacheControlPart;
             var defaultSettings = GetDefaultSettings(cacheControlPart.ContentItem);
 
             if (cacheControlPart.UseDefault && defaultSettings != null)
             {
                 cacheControl = defaultSettings;
-            }
-
-            if (cacheControl.Directive == Constants.CacheDirectives.Public && identity.IsAuthenticated && (defaultSettings?.ForcePrivateWhenAuthenticated ?? false))
-            {
-                cacheControl.Directive = Constants.CacheDirectives.Private;
             }
 
             return cacheControl;
