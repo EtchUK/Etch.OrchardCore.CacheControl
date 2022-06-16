@@ -25,3 +25,13 @@
     <input asp-for="Duration" class="form-control">
     <span class="hint">@T["Define, in minutes, how long the item should live in the cache."]</span>
 </div>
+
+<div class="form-group">
+    <div class="custom-control custom-checkbox">
+        <input asp-for="ForcePrivateWhenAuthenticated" type="checkbox" class="custom-control-input content-preview-select js-use-default-checkbox" checked="@Model.ForcePrivateWhenAuthenticated" />
+        <label class="custom-control-label" asp-for="ForcePrivateWhenAuthenticated">
+            @T["Force private when user is authenticated"]
+            <span class="hint dashed">@T["When a user is authenticated, if the cache directive is \"public\" then it will be changed to \"private\"."]</span>
+        </label>
+    </div>
+</div>

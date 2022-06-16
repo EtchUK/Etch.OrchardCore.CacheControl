@@ -47,7 +47,6 @@ namespace Etch.OrchardCore.CacheControl.Drivers
             }
 
             var httpContext = _httpContextAccessor.HttpContext;
-            var cacheControlPart = contentItem.As<CacheControlPart>();
 
             if (contentItem.ModifiedUtc.HasValue) 
             {
@@ -62,19 +61,7 @@ namespace Etch.OrchardCore.CacheControl.Drivers
                 }
             }
 
-            if (cacheControlPart.UseDefault)
-            {
-                var defaultSettings = GetDefaultSettings(contentItem);
-
-                if (defaultSettings != null)
-                {
-                    httpContext.Response.Headers[CacheControlResponseHeader] = defaultSettings.GetCacheControlHeader();
-                }
-            }
-            else
-            {
-                httpContext.Response.Headers[CacheControlResponseHeader] = cacheControlPart.GetCacheControlHeader();
-            }
+            httpContext.Response.Headers[CacheControlResponseHeader] = GetCacheControl(contentItem.As<CacheControlPart>()).GetCacheControlHeader();
 
             return Task.FromResult<IDisplayResult>(null); ;
         }
@@ -90,6 +77,26 @@ namespace Etch.OrchardCore.CacheControl.Drivers
             }
 
             return partDefinition.GetSettings<CacheControlPartSettings>();
+        }
+
+        private ICacheControl GetCacheControl(CacheControlPart cacheControlPart)
+        {
+            var httpContext = _httpContextAccessor.HttpContext;
+            var identity = httpContext.User.Identity;
+            ICacheControl cacheControl = cacheControlPart;
+            var defaultSettings = GetDefaultSettings(cacheControlPart.ContentItem);
+
+            if (cacheControlPart.UseDefault && defaultSettings != null)
+            {
+                cacheControl = defaultSettings;
+            }
+
+            if (cacheControl.Directive == Constants.CacheDirectives.Public && identity.IsAuthenticated && (defaultSettings?.ForcePrivateWhenAuthenticated ?? false))
+            {
+                cacheControl.Directive = Constants.CacheDirectives.Private;
+            }
+
+            return cacheControl;
         }
     }
 }

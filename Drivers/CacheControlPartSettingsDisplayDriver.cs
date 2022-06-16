@@ -18,6 +18,7 @@ namespace Etch.OrchardCore.CacheControl.Drivers
 
                 model.Directive = settings.Directive;
                 model.Duration = settings.Duration;
+                model.ForcePrivateWhenAuthenticated = settings.ForcePrivateWhenAuthenticated;
             }).Location("Content");
         }
 
@@ -30,6 +31,7 @@ namespace Etch.OrchardCore.CacheControl.Drivers
             {
                 settings.Directive = model.Directive;
                 settings.Duration = model.Duration;
+                settings.ForcePrivateWhenAuthenticated = model.ForcePrivateWhenAuthenticated;
 
                 context.Builder.WithSettings(settings);
             }
