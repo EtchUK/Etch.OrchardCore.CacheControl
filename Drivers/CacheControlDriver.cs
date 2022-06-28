@@ -48,7 +48,7 @@ namespace Etch.OrchardCore.CacheControl.Drivers
 
             var httpContext = _httpContextAccessor.HttpContext;
 
-            if (contentItem.ModifiedUtc.HasValue) 
+            if (!httpContext.User.Identity.IsAuthenticated && contentItem.ModifiedUtc.HasValue) 
             {
                 httpContext.Response.Headers["Last-Modified"] = contentItem.ModifiedUtc.Value.ToString("R");
 
