@@ -6,16 +6,22 @@ namespace Etch.OrchardCore.CacheControl.Extensions
     {
         private const int OneMinuteInSeconds = 60;
 
-        public static string GetCacheControlHeader(this ICacheControl cacheControlPart)
+        public static string GetCacheControlHeader(this ICacheControl cacheControlPart, bool isAuthenticated)
         {
             var header = string.Empty;
+            var directive = cacheControlPart.Directive;
 
-            if (!string.IsNullOrWhiteSpace(cacheControlPart.Directive))
+            if (!string.IsNullOrWhiteSpace(directive))
             {
-                header += cacheControlPart.Directive;
+                if (isAuthenticated && directive == Constants.CacheDirectives.Public)
+                {
+                    directive = Constants.CacheDirectives.Private;
+                }
+
+                header += directive;
             }
 
-            if (cacheControlPart.Directive == Constants.CacheDirectives.Private || cacheControlPart.Directive == Constants.CacheDirectives.Public)
+            if (directive == Constants.CacheDirectives.Private || directive == Constants.CacheDirectives.Public)
             {
                 header += !string.IsNullOrEmpty(header) ? $", max-age={ConvertMinutesToSeconds(cacheControlPart.Duration)}" : $"max-age={ConvertMinutesToSeconds(cacheControlPart.Duration)}";
             }

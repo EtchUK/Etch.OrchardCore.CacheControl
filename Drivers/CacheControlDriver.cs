@@ -47,8 +47,9 @@ namespace Etch.OrchardCore.CacheControl.Drivers
             }
 
             var httpContext = _httpContextAccessor.HttpContext;
+            var isAuthenticated = httpContext.User.Identity.IsAuthenticated;
 
-            if (!httpContext.User.Identity.IsAuthenticated && contentItem.ModifiedUtc.HasValue) 
+            if (!isAuthenticated && contentItem.ModifiedUtc.HasValue) 
             {
                 httpContext.Response.Headers["Last-Modified"] = contentItem.ModifiedUtc.Value.ToString("R");
 
@@ -61,7 +62,7 @@ namespace Etch.OrchardCore.CacheControl.Drivers
                 }
             }
 
-            httpContext.Response.Headers[CacheControlResponseHeader] = GetCacheControl(contentItem.As<CacheControlPart>()).GetCacheControlHeader();
+            httpContext.Response.Headers[CacheControlResponseHeader] = GetCacheControl(contentItem.As<CacheControlPart>()).GetCacheControlHeader(isAuthenticated);
 
             return Task.FromResult<IDisplayResult>(null); ;
         }
