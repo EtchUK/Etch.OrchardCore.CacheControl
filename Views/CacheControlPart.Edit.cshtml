@@ -25,10 +25,10 @@ document.querySelector(".js-use-default-checkbox").addEventListener('change', fu
 });
 </script>
 
-<div class="form-group">
-    <div class="custom-control custom-checkbox">
-        <input asp-for="UseDefault" type="checkbox" class="custom-control-input content-preview-select js-use-default-checkbox" checked="@Model.UseDefault" />
-        <label class="custom-control-label" asp-for="UseDefault">
+<div class="mb-3">
+    <div class="form-check">
+        <input asp-for="UseDefault" type="checkbox" class="form-check-input content-preview-select js-use-default-checkbox" checked="@Model.UseDefault" />
+        <label class="form-check-label" asp-for="UseDefault">
             @T["Use default"]
             <span class="hint dashed">@T["Use default cache control settings defined within part settings."]</span>
         </label>
@@ -36,7 +36,7 @@ document.querySelector(".js-use-default-checkbox").addEventListener('change', fu
 </div>
 
 <div class="js-custom-cache-fields @(Model.UseDefault ? "d-none" : "")">
-    <div class="form-group">
+    <div class="mb-3">
         <label asp-for="Directive">@T["Cache Directive"]</label>
         <select asp-for="Directive" asp-items="@items" asp-validation-class-for="Directive" class="form-select form-control w-25"></select>
         <span class="hint">@T["Define the caching behaviour that should be used."]</span>
@@ -45,7 +45,7 @@ document.querySelector(".js-use-default-checkbox").addEventListener('change', fu
         </div>
     </div>
 
-    <div class="form-group">
+    <div class="mb-3">
         <label asp-for="Duration">@T["Cache Duration"]</label>
         <input asp-for="Duration" class="form-control">
         <span class="hint">@T["Define, in minutes, how long the item should live in the cache."]</span>
