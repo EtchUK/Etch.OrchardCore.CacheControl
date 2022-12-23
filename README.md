@@ -1,6 +1,6 @@
 # Etch.OrchardCore.CacheControl
 
-Orchard Core module for controlling`cache-control` response headers on content items.
+Orchard Core module for controlling `cache-control` response headers on content items.
 
 ## Build Status
 
@@ -8,7 +8,7 @@ Orchard Core module for controlling`cache-control` response headers on content i
 
 ## Orchard Core Reference
 
-This module is referencing a stable build of Orchard Core ([`1.4.0`](https://www.nuget.org/packages/OrchardCore.Module.Targets/1.4.0)).
+This module is referencing a stable build of Orchard Core ([`1.5.0`](https://www.nuget.org/packages/OrchardCore.Module.Targets/1.5.0)).
 
 ## Installing
 
