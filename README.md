@@ -4,7 +4,7 @@ Orchard Core module for controlling`cache-control` response headers on content i
 
 ## Build Status
 
-[![Build Status](https://secure.travis-ci.org/etchuk/Etch.OrchardCore.CacheControl.png?branch=main)](http://travis-ci.org/etchuk/Etch.OrchardCore.CacheControl) [![NuGet](https://img.shields.io/nuget/v/Etch.OrchardCore.CacheControl.svg)](https://www.nuget.org/packages/Etch.OrchardCore.CacheControl)
+[![NuGet](https://img.shields.io/nuget/v/Etch.OrchardCore.CacheControl.svg)](https://www.nuget.org/packages/Etch.OrchardCore.CacheControl)
 
 ## Orchard Core Reference
 
