@@ -2,6 +2,7 @@
 using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Settings;
 using OrchardCore.Data.Migration;
+using System.Threading.Tasks;
 
 namespace Etch.OrchardCore.CacheControl
 {
@@ -14,9 +15,9 @@ namespace Etch.OrchardCore.CacheControl
             _contentDefinitionManager = contentDefinitionManager;
         }
 
-        public int Create()
+        public async Task<int> CreateAsync()
         {
-            _contentDefinitionManager.AlterPartDefinition(nameof(CacheControlPart), builder => builder
+            await _contentDefinitionManager.AlterPartDefinitionAsync(nameof(CacheControlPart), builder => builder
                 .Attachable()
                 .WithDisplayName("Cache Control")
                 .WithDescription("Configure cache-control response header")
