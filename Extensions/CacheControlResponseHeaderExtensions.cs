@@ -7,11 +7,10 @@ namespace Etch.OrchardCore.CacheControl.Extensions
     {
         private const int OneMinuteInSeconds = 60;
 
-        public static async Task<string> GetCacheControlHeader(this Task<ICacheControl> cacheControlPart, bool isAuthenticated)
+        public static string GetCacheControlHeader(this ICacheControl cacheControlPart, bool isAuthenticated)
         {
             var header = string.Empty;
-            var ccp = await cacheControlPart;
-            var directive = ccp.Directive;
+            var directive = cacheControlPart.Directive;
 
             if (!string.IsNullOrWhiteSpace(directive))
             {
@@ -25,7 +24,7 @@ namespace Etch.OrchardCore.CacheControl.Extensions
 
             if (directive == Constants.CacheDirectives.Private || directive == Constants.CacheDirectives.Public)
             {
-                header += !string.IsNullOrEmpty(header) ? $", max-age={ConvertMinutesToSeconds(ccp.Duration)}" : $"max-age={ConvertMinutesToSeconds(ccp.Duration)}";
+                header += !string.IsNullOrEmpty(header) ? $", max-age={ConvertMinutesToSeconds(cacheControlPart.Duration)}" : $"max-age={ConvertMinutesToSeconds(cacheControlPart.Duration)}";
             }
 
             return header;

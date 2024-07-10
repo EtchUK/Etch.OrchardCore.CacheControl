@@ -62,7 +62,8 @@ namespace Etch.OrchardCore.CacheControl.Drivers
                 }
             }
 
-            httpContext.Response.Headers[CacheControlResponseHeader] = await GetCacheControlAsync(contentItem.As<CacheControlPart>()).GetCacheControlHeader(isAuthenticated);
+            var cacheControl = await GetCacheControlAsync(contentItem.As<CacheControlPart>());
+            httpContext.Response.Headers[CacheControlResponseHeader] = cacheControl.GetCacheControlHeader(isAuthenticated);
 
             return null;
         }
