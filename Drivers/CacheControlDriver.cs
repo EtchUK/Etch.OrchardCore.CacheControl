@@ -67,7 +67,7 @@ namespace Etch.OrchardCore.CacheControl.Drivers
             return Task.FromResult<IDisplayResult>(null); ;
         }
 
-        private async Task<CacheControlPartSettings> GetDefaultSettings(ContentItem contentItem)
+        private async Task<CacheControlPartSettings> GetDefaultSettingsAsync(ContentItem contentItem)
         {
             var typeDefinition = await _contentDefinitionManager.GetTypeDefinitionAsync(contentItem.ContentType);
             var partDefinition = typeDefinition.Parts.FirstOrDefault(x => x.Name == nameof(CacheControlPart));
@@ -83,7 +83,7 @@ namespace Etch.OrchardCore.CacheControl.Drivers
         private ICacheControl GetCacheControl(CacheControlPart cacheControlPart)
         {
             ICacheControl cacheControl = cacheControlPart;
-            var defaultSettings = GetDefaultSettings(cacheControlPart.ContentItem);
+            var defaultSettings = GetDefaultSettingsAsync(cacheControlPart.ContentItem);
 
             if (cacheControlPart.UseDefault && defaultSettings != null)
             {
