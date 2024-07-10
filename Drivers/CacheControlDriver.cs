@@ -30,11 +30,11 @@ namespace Etch.OrchardCore.CacheControl.Drivers
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public override Task<IDisplayResult> DisplayAsync(ContentItem contentItem, BuildDisplayContext context)
+        public override async Task<IDisplayResult> DisplayAsync(ContentItem contentItem, BuildDisplayContext context)
         {
             if (_primaryContentRendered)
             {
-                return Task.FromResult<IDisplayResult>(null);
+                return null;
             }
 
             _primaryContentRendered = true;
@@ -43,7 +43,7 @@ namespace Etch.OrchardCore.CacheControl.Drivers
                 context.Shape.TryGetProperty(nameof(ContentTypeSettings.Stereotype), out string _) ||
                 !contentItem.Has<CacheControlPart>())
             {
-                return Task.FromResult<IDisplayResult>(null);
+                return null;
             }
 
             var httpContext = _httpContextAccessor.HttpContext;
@@ -58,13 +58,13 @@ namespace Etch.OrchardCore.CacheControl.Drivers
                 if (!string.IsNullOrEmpty(ims) && !CacheControlUtils.IsModifiedSince(contentItem.ModifiedUtc.Value, ims))
                 {
                     httpContext.Response.StatusCode = (int)HttpStatusCode.NotModified;
-                    return Task.FromResult<IDisplayResult>(null);
+                    return null;
                 }
             }
 
-            httpContext.Response.Headers[CacheControlResponseHeader] = GetCacheControl(contentItem.As<CacheControlPart>()).GetCacheControlHeader(isAuthenticated);
+            httpContext.Response.Headers[CacheControlResponseHeader] = await GetCacheControlAsync(contentItem.As<CacheControlPart>()).GetCacheControlHeader(isAuthenticated);
 
-            return Task.FromResult<IDisplayResult>(null); ;
+            return null;
         }
 
         private async Task<CacheControlPartSettings> GetDefaultSettingsAsync(ContentItem contentItem)
@@ -80,14 +80,14 @@ namespace Etch.OrchardCore.CacheControl.Drivers
             return partDefinition.GetSettings<CacheControlPartSettings>();
         }
 
-        private ICacheControl GetCacheControl(CacheControlPart cacheControlPart)
+        private async Task<ICacheControl> GetCacheControlAsync(CacheControlPart cacheControlPart)
         {
             ICacheControl cacheControl = cacheControlPart;
-            var defaultSettings = GetDefaultSettingsAsync(cacheControlPart.ContentItem);
+            var defaultSettings = await GetDefaultSettingsAsync(cacheControlPart.ContentItem);
 
             if (cacheControlPart.UseDefault && defaultSettings != null)
             {
-                cacheControl = defaultSettings.Result;
+                cacheControl = defaultSettings;
             }
 
             return cacheControl;
