@@ -1,5 +1,4 @@
 ﻿using Etch.OrchardCore.CacheControl.Models;
-using System.Threading.Tasks;
 
 namespace Etch.OrchardCore.CacheControl.Extensions
 {
