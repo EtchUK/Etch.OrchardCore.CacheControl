@@ -1,4 +1,5 @@
 ﻿using Etch.OrchardCore.CacheControl.Models;
+using System.Threading.Tasks;
 
 namespace Etch.OrchardCore.CacheControl.Extensions
 {
@@ -6,10 +7,11 @@ namespace Etch.OrchardCore.CacheControl.Extensions
     {
         private const int OneMinuteInSeconds = 60;
 
-        public static string GetCacheControlHeader(this ICacheControl cacheControlPart, bool isAuthenticated)
+        public static async Task<string> GetCacheControlHeader(this Task<ICacheControl> cacheControlPart, bool isAuthenticated)
         {
             var header = string.Empty;
-            var directive = cacheControlPart.Directive;
+            var ccp = await cacheControlPart;
+            var directive = ccp.Directive;
 
             if (!string.IsNullOrWhiteSpace(directive))
             {
@@ -23,7 +25,7 @@ namespace Etch.OrchardCore.CacheControl.Extensions
 
             if (directive == Constants.CacheDirectives.Private || directive == Constants.CacheDirectives.Public)
             {
-                header += !string.IsNullOrEmpty(header) ? $", max-age={ConvertMinutesToSeconds(cacheControlPart.Duration)}" : $"max-age={ConvertMinutesToSeconds(cacheControlPart.Duration)}";
+                header += !string.IsNullOrEmpty(header) ? $", max-age={ConvertMinutesToSeconds(ccp.Duration)}" : $"max-age={ConvertMinutesToSeconds(ccp.Duration)}";
             }
 
             return header;
